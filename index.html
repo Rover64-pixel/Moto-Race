@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moto Rush</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hud">
+        <div>
+          <h1>Moto Rush</h1>
+          <p>Beat your own best time on a fresh random circuit every run.</p>
+        </div>
+        <div class="stats">
+          <div class="stat-card">
+            <span class="label">Stopwatch</span>
+            <strong id="current-time">0.00s</strong>
+          </div>
+          <div class="stat-card">
+            <span class="label">Best</span>
+            <strong id="best-time">--</strong>
+          </div>
+          <div class="stat-card">
+            <span class="label">Attempts</span>
+            <strong id="attempts">0</strong>
+          </div>
+        </div>
+      </header>
+
+      <div class="message-row">
+        <span id="status-message">Tap the throttle and stay on the road. Hazards will reset you to the start.</span>
+      </div>
+
+      <canvas id="game" width="960" height="540"></canvas>
+
+      <div class="controls">
+        <span>Controls: W = accelerate · A / D = lean · R = restart attempt</span>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
