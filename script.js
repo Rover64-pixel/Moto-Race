@@ -62,6 +62,7 @@ function resetAttempt(startNewTrack = true) {
     offset: 0,
     speed: 0,
     steer: 0,
+    turnAngle: 0,
     x: canvas.width * 0.5,
     y: canvas.height * 0.5,
     angle: 0,
@@ -293,11 +294,17 @@ function update(deltaTime) {
   }
 
   bike.speed = clamp(bike.speed, 0, 280);
-  bike.steer += steerInput * 0.0012 * deltaTime * 60;
-  bike.steer *= 0.88;
 
-  bike.offset += bike.steer * bike.speed * deltaTime;
-  bike.offset = clamp(bike.offset, -currentTrack.roadWidth * 0.42, currentTrack.roadWidth * 0.42);
+  const turnStrength = 0.0036;
+  const turnDecay = 0.78;
+  bike.turnAngle += steerInput * turnStrength * deltaTime * 100;
+  bike.turnAngle *= turnDecay;
+
+  bike.steer += steerInput * 0.0028 * deltaTime * 100;
+  bike.steer *= 0.92;
+
+  bike.offset += bike.steer * Math.max(110, bike.speed * 0.8) * deltaTime;
+  bike.offset = clamp(bike.offset, -currentTrack.roadWidth * 0.44, currentTrack.roadWidth * 0.44);
   bike.progress += bike.speed * deltaTime;
 
   if (completionOverlay) {
@@ -476,8 +483,7 @@ function drawTrack(track) {
 function drawBike() {
   ctx.save();
   ctx.translate(canvas.width * 0.5, canvas.height * 0.5);
-  ctx.scale(1, 1);
-  ctx.rotate(bike.angle + bike.roll);
+  ctx.rotate(bike.angle + bike.roll + bike.turnAngle * 0.12);
 
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
