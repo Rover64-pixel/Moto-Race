@@ -295,15 +295,16 @@ function update(deltaTime) {
 
   bike.speed = clamp(bike.speed, 0, 280);
 
-  const turnStrength = 0.0036;
-  const turnDecay = 0.78;
-  bike.turnAngle += steerInput * turnStrength * deltaTime * 100;
-  bike.turnAngle *= turnDecay;
+  const turnStrength = 0.0042;
+  bike.turnAngle = clamp(bike.turnAngle + steerInput * turnStrength * deltaTime * 100, -0.9, 0.9);
 
-  bike.steer += steerInput * 0.0028 * deltaTime * 100;
-  bike.steer *= 0.92;
+  if (steerInput === 0) {
+    bike.steer = 0;
+  } else {
+    bike.steer = clamp(bike.steer + steerInput * 0.0032 * deltaTime * 100, -0.95, 0.95);
+  }
 
-  bike.offset += bike.steer * Math.max(110, bike.speed * 0.8) * deltaTime;
+  bike.offset += bike.steer * Math.max(90, bike.speed * 0.75) * deltaTime;
   bike.offset = clamp(bike.offset, -currentTrack.roadWidth * 0.44, currentTrack.roadWidth * 0.44);
   bike.progress += bike.speed * deltaTime;
 
